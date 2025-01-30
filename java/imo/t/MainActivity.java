@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 
 public class MainActivity extends Activity {
 
@@ -16,6 +12,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		TextView testText = findViewById(R.id.test_text);
-		testText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf"));
+		TextEditor textEditor = findViewById(R.id.text_editor);
+
+		Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf");
+
+		testText.setTypeface(typeface);
+		textEditor.setTypeface(typeface);
+
+		testText.setText("this is a text from a textview with a custom font");
+		textEditor.setText("this is a text from the custom view with a custom font");
     }
 }
