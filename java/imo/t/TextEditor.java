@@ -7,12 +7,15 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextEditor extends View {
 
-	static Paint mPaint;
-	static String content = "";
-	static float textSize = 30;
+	private static Paint mPaint;
+	private static List<String> rowTexts = new ArrayList<>();
+	private static float textSize = 30;
+	private static float rowHeight;
 
 	public TextEditor(Context context) {
 		super(context);
@@ -28,10 +31,13 @@ public class TextEditor extends View {
 	}
 
 	void setText(String string) {
-		content = string;
+		rowTexts.clear();
+		for (String rowText : string.split("\n")) {
+			rowTexts.add(rowText);
+		}
 		invalidate();
 	}
-	
+
 	void setTextSize(float size) {
 		textSize = size;
 		mPaint.setTextSize(textSize);
@@ -41,6 +47,10 @@ public class TextEditor extends View {
 	void setTypeface(Typeface typeface) {
 		mPaint.setTypeface(typeface);
 		invalidate();
+	}
+
+	float getTextSize() {
+		return textSize;
 	}
 
 
@@ -54,6 +64,12 @@ public class TextEditor extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawText(content, 0, getHeight() / 2, mPaint);
+		rowHeight = mPaint.getFontSpacing();
+
+		float drawTextPoint = 0;
+		for (String rowText : rowTexts) {
+			drawTextPoint += rowHeight;
+			canvas.drawText(rowText, 0, drawTextPoint, mPaint);
+		}
 	}
 }
