@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">text</string>
+    <!-- slowly gonna introduce characters for vim macros -->
+    <string name="_0">0</string>
+    <string name="_1"> </string>
+    <string name="_2"> </string>
+    <string name="_3"> </string>
+    <string name="_4"> </string>
+    <string name="_5"> </string>
+    <string name="_6"> </string>
+    <string name="_7"> </string>
+    <string name="_8"> </string>
+    <string name="_9"> </string>
+    <string name="a"> </string>
+    <string name="b">b</string>
+    <string name="c"> </string>
+    <string name="d"> </string>
+    <string name="e">e</string>
+    <string name="f"> </string>
+    <string name="g"> </string>
+    <string name="h">h</string>
+    <string name="i"> </string>
+    <string name="j">j</string>
+    <string name="k">k</string>
+    <string name="l">l</string>
+    <string name="m"> </string>
+    <string name="n"> </string>
+    <string name="o"> </string>
+    <string name="p"> </string>
+    <string name="q"> </string>
+    <string name="r"> </string>
+    <string name="s"> </string>
+    <string name="t"> </string>
+    <string name="u"> </string>
+    <string name="v"> </string>
+    <string name="w">w</string>
+    <string name="x"> </string>
+    <string name="y"> </string>
+    <string name="z"> </string>
+    <string name="comma"> </string>
+    <string name="backspace">back</string>
+    <string name="period"> </string>
+    <string name="ctrl"> </string>
+    <string name="shift">shift</string>
+    <string name="enter">enter</string>
+</resources>
