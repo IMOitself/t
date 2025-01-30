@@ -12,7 +12,7 @@ public class TextEditor extends View {
 
 	static Paint mPaint;
 	static String content = "";
-	static final float textSize = 30;
+	static float textSize = 30;
 
 	public TextEditor(Context context) {
 		super(context);
@@ -29,6 +29,12 @@ public class TextEditor extends View {
 
 	void setText(String string) {
 		content = string;
+		invalidate();
+	}
+	
+	void setTextSize(float size) {
+		textSize = size;
+		mPaint.setTextSize(textSize);
 		invalidate();
 	}
 
@@ -48,6 +54,6 @@ public class TextEditor extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawText(content, 0, 100, mPaint);
+		canvas.drawText(content, 0, getHeight() / 2, mPaint);
 	}
 }
