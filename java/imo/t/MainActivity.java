@@ -19,16 +19,17 @@ public class MainActivity extends Activity {
 		textEditor.setTypeface(typeface);
 		textEditor.setText("this is a text \nfrom the custom view \nwith a custom font");
 
-		seekbar.setMax(99);
-		seekbar.setProgress((int) textEditor.getTextSize());
+		seekbar.setMax(textEditor.rowTexts.get(0).length() - 1);
+		seekbar.setProgress(textEditor.cursorCol);
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar v) {}
 				public void onStopTrackingTouch(SeekBar v) {}
 
 				@Override
 				public void onProgressChanged(SeekBar v, int progress, boolean b) {
-					textEditor.setTextSize(progress);
-					textEditor.setText(progress + " <- This is the text \nsize of this custom view");
+					if(progress > textEditor.cursorCol) textEditor.cursorCol++;
+					if(progress < textEditor.cursorCol) textEditor.cursorCol--;
+					textEditor.invalidate();
 				}
 			});
     }
