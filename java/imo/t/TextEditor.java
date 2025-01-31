@@ -13,13 +13,13 @@ import android.graphics.RectF;
 
 public class TextEditor extends View {
 
-	private static Paint mPaint;
-	static List<String> rowTexts = new ArrayList<>();
-	private static float textSize = 50;
-	private static float rowHeight;
-	private static RectF cursorRect = new RectF();
-	static int cursorRow = 0;
-	static int cursorCol = 0;
+	private Paint mPaint;
+	private List<String> rowTexts = new ArrayList<>();
+	private float textSize = 50;
+	private float rowHeight;
+	private RectF cursorRect = new RectF();
+	private int cursorRow = 0;
+	private int cursorCol = 0;
 	
 	public TextEditor(Context context) {
 		super(context);
@@ -34,28 +34,50 @@ public class TextEditor extends View {
 		init();
 	}
 
+	List<String> getLines(){
+		return rowTexts;
+	}
+	
+	void setCursorRow(int cursorRow) {
+		this.cursorRow = cursorRow;
+	}
+
+	int getCursorRow() {
+		return cursorRow;
+	}
+
+	void setCursorCol(int cursorCol) {
+		this.cursorCol = cursorCol;
+	}
+
+	int getCursorCol() {
+		return cursorCol;
+	}
+	
 	void setText(String string) {
-		rowTexts.clear();
+		this.rowTexts.clear();
 		for (String rowText : string.split("\n")) {
-			rowTexts.add(rowText);
+			this.rowTexts.add(rowText);
 		}
 		invalidate();
 	}
 
 	void setTextSize(float size) {
-		textSize = size;
-		mPaint.setTextSize(textSize);
-		invalidate();
-	}
-
-	void setTypeface(Typeface typeface) {
-		mPaint.setTypeface(typeface);
+		this.textSize = size;
+		this.mPaint.setTextSize(textSize);
 		invalidate();
 	}
 
 	float getTextSize() {
 		return textSize;
 	}
+
+	void setTypeface(Typeface typeface) {
+		this.mPaint.setTypeface(typeface);
+		invalidate();
+	}
+	
+	
 
 
 
