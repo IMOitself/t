@@ -94,14 +94,18 @@ public class TextEditor extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		rowHeight = mPaint.getFontSpacing(); 
+		rowHeight = mPaint.getFontSpacing();
+		
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
 		if(cursorRect.left < 0) cursorRect.left = 0;
 		if(cursorRect.top < 0) cursorRect.top = 0;
 		cursorRect.right = cursorRect.left + charWidth;
 		cursorRect.bottom = cursorRect.top + rowHeight;
+		
 		mPaint.setColor(Color.DKGRAY);
+		canvas.drawRect(0, cursorRect.top, getWidth(), cursorRect.bottom, mPaint);
+		mPaint.setColor(Color.GRAY);
 		canvas.drawRect(cursorRect, mPaint);
 		
 		mPaint.setColor(Color.WHITE);
@@ -114,10 +118,8 @@ public class TextEditor extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		int col = (int) Math.floor(event.getX() / charWidth) + 1;
-		int row = (int) Math.floor(event.getY() / rowHeight) + 1;
-		cursorCol = col;
-		cursorRow = row;
+		cursorCol = (int) Math.floor(event.getX() / charWidth) + 1;
+		cursorRow = (int) Math.floor(event.getY() / rowHeight) + 1;
 		invalidate();
 		return super.onTouchEvent(event);
 	}
