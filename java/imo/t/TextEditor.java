@@ -22,6 +22,7 @@ public class TextEditor extends View {
 	private RectF cursorRect = new RectF();
 	private int cursorCol = 0;
 	private int cursorRow = 0;
+	private int cursorSize = 3;
 	
 	public TextEditor(Context context) {
 		super(context);
@@ -100,7 +101,7 @@ public class TextEditor extends View {
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
 		if(cursorRect.left < 0) cursorRect.left = 0;
 		if(cursorRect.top < 0) cursorRect.top = 0;
-		cursorRect.right = cursorRect.left + charWidth;
+		cursorRect.right = cursorRect.left + cursorSize;
 		cursorRect.bottom = cursorRect.top + rowHeight;
 		
 		mPaint.setColor(Color.DKGRAY);
@@ -108,7 +109,14 @@ public class TextEditor extends View {
 		mPaint.setColor(Color.GRAY);
 		canvas.drawRect(cursorRect, mPaint);
 		
+		cursorRect.left -= charWidth / 2;
+		cursorRect.right = cursorRect.left + charWidth;
+		mPaint.setColor(Color.RED);
+		mPaint.setStyle(Paint.Style.STROKE);
+		canvas.drawRect(cursorRect, mPaint);
+		
 		mPaint.setColor(Color.WHITE);
+		mPaint.setStyle(Paint.Style.FILL);
 		float drawTextPoint = 0;
 		for (String rowText : rowTexts) {
 			drawTextPoint += rowHeight;
@@ -118,7 +126,7 @@ public class TextEditor extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		cursorCol = (int) Math.floor(event.getX() / charWidth) + 1;
+		cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
 		cursorRow = (int) Math.floor(event.getY() / rowHeight) + 1;
 		invalidate();
 		return super.onTouchEvent(event);
