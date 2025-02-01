@@ -10,6 +10,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 
 public class TextEditor extends View {
 
@@ -17,9 +18,10 @@ public class TextEditor extends View {
 	private List<String> rowTexts = new ArrayList<>();
 	private float textSize = 50;
 	private float rowHeight;
+	private float charWidth;
 	private RectF cursorRect = new RectF();
-	private int cursorRow = 0;
 	private int cursorCol = 0;
+	private int cursorRow = 0;
 	
 	public TextEditor(Context context) {
 		super(context);
@@ -65,6 +67,7 @@ public class TextEditor extends View {
 	void setTextSize(float size) {
 		this.textSize = size;
 		this.mPaint.setTextSize(textSize);
+		this.charWidth = mPaint.measureText(" ");
 		invalidate();
 	}
 
@@ -74,6 +77,7 @@ public class TextEditor extends View {
 
 	void setTypeface(Typeface typeface) {
 		this.mPaint.setTypeface(typeface);
+		this.charWidth = mPaint.measureText(" ");
 		invalidate();
 	}
 	
@@ -84,15 +88,13 @@ public class TextEditor extends View {
 	void init() {
 		mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
-		mPaint.setTextSize(textSize);
+		this.setTextSize(textSize);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		rowHeight = mPaint.getFontSpacing();
-
-		float charWidth = mPaint.measureText(" ");
+		rowHeight = mPaint.getFontSpacing(); 
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
 		if(cursorRect.left < 0) cursorRect.left = 0;
@@ -108,5 +110,15 @@ public class TextEditor extends View {
 			drawTextPoint += rowHeight;
 			canvas.drawText(rowText, 0, drawTextPoint, mPaint);
 		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		int col = (int) Math.floor(event.getX() / charWidth) + 1;
+		int row = (int) Math.floor(event.getY() / rowHeight) + 1;
+		cursorCol = col;
+		cursorRow = row;
+		invalidate();
+		return super.onTouchEvent(event);
 	}
 }
