@@ -6,11 +6,23 @@
 	android:gravity="center"
 	android:orientation="vertical">
 
-	<imo.t.TextEditor
+	<LinearLayout
+		android:orientation="horizontal"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/text_editor"
-		android:layout_weight="1.0"/>
+		android:layout_height="match_parent"
+		android:layout_weight="1.0">
+
+		<imo.t.LineNumbers
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/line_numbers"/>
+
+		<imo.t.TextEditor
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/text_editor"/>
+
+	</LinearLayout>
 
 	<SeekBar
 		android:layout_width="match_parent"

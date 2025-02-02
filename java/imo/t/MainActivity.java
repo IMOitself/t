@@ -13,11 +13,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		final TextEditor textEditor = findViewById(R.id.text_editor);
+		final LineNumbers lineNumbers = findViewById(R.id.line_numbers);
 		final SeekBar seekbar = findViewById(R.id.seekbar);
 
 		Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf");
 		textEditor.setTypeface(typeface);
 		textEditor.setText("this is a text \nfrom the custom view \nwith a custom font");
+		
+		lineNumbers.linkWithTextEditor(textEditor);
 
 		seekbar.setMax(1);
 		seekbar.setProgress(0);

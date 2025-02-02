@@ -37,10 +37,6 @@ public class TextEditor extends View {
 		init();
 	}
 
-	List<String> getLines(){
-		return rowTexts;
-	}
-	
 	void setCursorRow(int cursorRow) {
 		this.cursorRow = cursorRow;
 	}
@@ -55,6 +51,26 @@ public class TextEditor extends View {
 
 	int getCursorCol() {
 		return cursorCol;
+	}
+	
+	float getCharWidth(){
+		return charWidth;
+	}
+	
+	List<String> getLines(){
+		return rowTexts;
+	}
+	
+	Paint getPaint(){
+		return mPaint;
+	}
+	
+	int getRowAmount(){
+		return rowTexts.size();
+	}
+	
+	float getRowHeight(){
+		return rowHeight;
 	}
 	
 	void setText(String string) {
@@ -109,14 +125,7 @@ public class TextEditor extends View {
 		mPaint.setColor(Color.GRAY);
 		canvas.drawRect(cursorRect, mPaint);
 		
-		cursorRect.left -= charWidth / 2;
-		cursorRect.right = cursorRect.left + charWidth;
-		mPaint.setColor(Color.RED);
-		mPaint.setStyle(Paint.Style.STROKE);
-		canvas.drawRect(cursorRect, mPaint);
-		
 		mPaint.setColor(Color.WHITE);
-		mPaint.setStyle(Paint.Style.FILL);
 		float drawTextPoint = 0;
 		for (String rowText : rowTexts) {
 			drawTextPoint += rowHeight;
