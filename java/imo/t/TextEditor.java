@@ -23,6 +23,7 @@ public class TextEditor extends View {
 	private int cursorCol = 0;
 	private int cursorRow = 0;
 	private int cursorSize = 3;
+	int test_canvasTranslateY = 0;
 	
 	public TextEditor(Context context) {
 		super(context);
@@ -112,6 +113,8 @@ public class TextEditor extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		rowHeight = mPaint.getFontSpacing();
+		
+		canvas.translate(0, -test_canvasTranslateY);
 		
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
