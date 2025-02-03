@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 
 		Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf");
 		textEditor.setTypeface(typeface);
-		textEditor.setText("this is a text \nfrom the custom view \nwith a custom font");
+		textEditor.setText(getString(R.string.text));
 		
 		lineNumbers.linkWithTextEditor(textEditor);
 

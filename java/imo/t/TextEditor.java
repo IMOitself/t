@@ -16,7 +16,7 @@ public class TextEditor extends View {
 
 	private Paint mPaint;
 	private List<String> rowTexts = new ArrayList<>();
-	private float textSize = 50;
+	private float textSize = 22;
 	private float rowHeight;
 	private float charWidth;
 	private RectF cursorRect = new RectF();
