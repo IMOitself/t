@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import android.graphics.RectF;
 import android.view.MotionEvent;
+import android.widget.Scroller;
+import java.util.EventListenerProxy;
 
 public class TextEditor extends View {
 
@@ -24,22 +26,22 @@ public class TextEditor extends View {
 	private int cursorRow = 0;
 	private int cursorSize = 3;
 	int translateY = 0;
-	int scrollDamp = 1;
-	private float initialY;
+	private Scroller scroller;
+	private float lastY;
 	Runnable onTranslateY;
 	
 	
 	public TextEditor(Context context) {
 		super(context);
-		init();
+		init(context);
 	}
 	public TextEditor(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+		init(context);
 	}
 	public TextEditor(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init();
+		init(context);
 	}
 
 	void setCursorRow(int cursorRow) {
@@ -107,10 +109,11 @@ public class TextEditor extends View {
 
 
 
-	void init() {
+	void init(Context context) {
 		mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
 		this.setTextSize(textSize);
+		scroller = new Scroller(context);
 	}
 
 	@Override
@@ -143,22 +146,37 @@ public class TextEditor extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if(MotionEvent.ACTION_DOWN == event.getAction()){
-			initialY = event.getY(); 
+			if(! scroller.isFinished()) scroller.abortAnimation();
+			lastY = event.getY();
+			return true;
 		}
 		if(MotionEvent.ACTION_MOVE == event.getAction()) {
-			float deltaY = initialY - event.getY();
-			translateY += (int) deltaY / scrollDamp;
+			float maxScroll = rowHeight * rowTexts.size();
+			
+			translateY -= event.getY() - lastY;
 			if (translateY < 0) translateY = 0;
-			if (onTranslateY != null) onTranslateY.run();
+			if (translateY > maxScroll) translateY = (int) maxScroll;
 			invalidate();
+			lastY = event.getY();
+			
+			if (onTranslateY != null) onTranslateY.run();
+			return true;
 		}
 		
 		if (true) return true;
 		
 		// CLICK LOGIC
 		cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
-		cursorRow = (int) Math.floor(event.getY() / rowHeight) + 1;
+		cursorRow = (int) (event.getY() / rowHeight) + 1;
 		invalidate();
 		return true;
+	}
+
+	@Override
+	public void computeScroll() {
+		if(scroller.computeScrollOffset()){
+			translateY = scroller.getCurrY();
+			postInvalidate();
+		}
 	}
 }

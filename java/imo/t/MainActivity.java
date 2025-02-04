@@ -22,16 +22,15 @@ public class MainActivity extends Activity {
 		
 		lineNumbers.linkWithTextEditor(textEditor);
 		
-		seekbar.setMin(1);
-		seekbar.setMax(10);
-		seekbar.setProgress(1);
-		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar v) {}
-				public void onStopTrackingTouch(SeekBar v) {}
-				public void onProgressChanged(SeekBar v, int progress, boolean b) {
-					textEditor.scrollDamp = progress;
-					textEditor.invalidate();
-				}
-			});
+//		seekbar.setMin(1);
+//		seekbar.setMax(10);
+//		seekbar.setProgress(1);
+//		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+//				public void onStartTrackingTouch(SeekBar v) {}
+//				public void onStopTrackingTouch(SeekBar v) {}
+//				public void onProgressChanged(SeekBar v, int progress, boolean b) {
+//					
+//				}
+//			});
     }
 }
