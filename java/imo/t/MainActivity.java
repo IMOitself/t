@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class MainActivity extends Activity {
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,17 +21,16 @@ public class MainActivity extends Activity {
 		textEditor.setText(getString(R.string.text));
 		
 		lineNumbers.linkWithTextEditor(textEditor);
-
-		seekbar.setMax(2000);
-		seekbar.setProgress(0);
+		
+		seekbar.setMin(1);
+		seekbar.setMax(10);
+		seekbar.setProgress(1);
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar v) {}
 				public void onStopTrackingTouch(SeekBar v) {}
 				public void onProgressChanged(SeekBar v, int progress, boolean b) {
-					textEditor.test_canvasTranslateY = progress;
-					lineNumbers.test_canvasTranslateY = progress;
+					textEditor.scrollDamp = progress;
 					textEditor.invalidate();
-					lineNumbers.invalidate();
 				}
 			});
     }

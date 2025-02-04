@@ -17,7 +17,7 @@ public class LineNumbers extends View {
 	private float textSize;
 	private float rowHeight;
 	private float charWidth;
-	int test_canvasTranslateY = 0;
+	int translateY = 0;
 
     public LineNumbers(Context context) {
 		super(context);
@@ -36,6 +36,13 @@ public class LineNumbers extends View {
 		rowAmount = mTextEditor.getRowAmount();
 		textSize = mTextEditor.getTextSize();
 		charWidth = mTextEditor.getCharWidth();
+		mTextEditor.onTranslateY = new Runnable(){
+			@Override
+			public void run(){
+				translateY = mTextEditor.translateY;
+				invalidate();
+			}
+		};
 		
 		int digits = String.valueOf(Math.abs(rowAmount)).length();
 		resizeWidth((int) ((digits * charWidth) + (charWidth / 2)));
@@ -54,7 +61,7 @@ public class LineNumbers extends View {
 		if (mTextEditor == null) return;
 		rowHeight = mPaint.getFontSpacing();
 		
-		canvas.translate(0, -test_canvasTranslateY);
+		canvas.translate(0, -translateY);
 		
 		float drawTextPoint = 0;
 		for (int i = 0; i < rowAmount; i++) {
