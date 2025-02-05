@@ -28,6 +28,8 @@ public class TextEditor extends View {
 	int translateY = 0;
 	private Scroller scroller;
 	private float lastY;
+	private float initialY;
+	private boolean isSwiping = false;
 	Runnable onTranslateY;
 	
 	
@@ -147,28 +149,38 @@ public class TextEditor extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		if(MotionEvent.ACTION_DOWN == event.getAction()){
 			if(! scroller.isFinished()) scroller.abortAnimation();
+			initialY = event.getY();
 			lastY = event.getY();
+			isSwiping = false;
 			return true;
 		}
 		if(MotionEvent.ACTION_MOVE == event.getAction()) {
-			float maxScroll = rowHeight * rowTexts.size();
+			if (!isSwiping && Math.abs(event.getY() - initialY) < 10) {
+				return true;
+			} else {
+				isSwiping = true;
+			}
 			
-			translateY -= event.getY() - lastY;
+			float maxScroll = rowHeight * rowTexts.size();
+			float distance = event.getY() - lastY;
+			
+			translateY -= distance;
 			if (translateY < 0) translateY = 0;
 			if (translateY > maxScroll) translateY = (int) maxScroll;
 			invalidate();
 			lastY = event.getY();
-			
+
 			if (onTranslateY != null) onTranslateY.run();
 			return true;
 		}
-		
-		if (true) return true;
-		
-		// CLICK LOGIC
-		cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
-		cursorRow = (int) (event.getY() / rowHeight) + 1;
-		invalidate();
+		if(MotionEvent.ACTION_UP == event.getAction()){
+			if (isSwiping) return true;
+			// CLICK LOGIC
+			cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
+			cursorRow = (int) (event.getY() / rowHeight) + 1;
+			invalidate();
+			return true;
+		}
 		return true;
 	}
 
