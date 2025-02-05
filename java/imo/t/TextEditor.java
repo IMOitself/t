@@ -4,15 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Scroller;
 import java.util.ArrayList;
 import java.util.List;
-import android.graphics.RectF;
-import android.view.MotionEvent;
-import android.widget.Scroller;
-import java.util.EventListenerProxy;
 
 public class TextEditor extends View {
 
@@ -24,15 +23,15 @@ public class TextEditor extends View {
 	private RectF cursorRect = new RectF();
 	private int cursorCol = 0;
 	private int cursorRow = 0;
-	private int cursorSize = 3;
+	private int cursorWidth = 3;
 	int translateY = 0;
 	private Scroller scroller;
 	private float lastY;
 	private float initialY;
 	private boolean isSwiping = false;
 	Runnable onTranslateY;
-	
-	
+
+
 	public TextEditor(Context context) {
 		super(context);
 		init(context);
@@ -62,23 +61,23 @@ public class TextEditor extends View {
 		return cursorCol;
 	}
 
-	float getCharWidth(){
+	float getCharWidth() {
 		return charWidth;
 	}
 
-	List<String> getLines(){
+	List<String> getLines() {
 		return rowTexts;
 	}
 
-	Paint getPaint(){
+	Paint getPaint() {
 		return mPaint;
 	}
 
-	int getRowAmount(){
+	int getRowAmount() {
 		return rowTexts.size();
 	}
 
-	float getRowHeight(){
+	float getRowHeight() {
 		return rowHeight;
 	}
 
@@ -127,16 +126,16 @@ public class TextEditor extends View {
 
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
-		if(cursorRect.left < 0) cursorRect.left = 0;
-		if(cursorRect.top < 0) cursorRect.top = 0;
-		cursorRect.right = cursorRect.left + cursorSize;
+		if (cursorRect.left < 0) cursorRect.left = 0;
+		if (cursorRect.top < 0) cursorRect.top = 0;
+		cursorRect.right = cursorRect.left + cursorWidth;
 		cursorRect.bottom = cursorRect.top + rowHeight;
 
 		mPaint.setColor(Color.DKGRAY);
 		canvas.drawRect(0, cursorRect.top, getWidth(), cursorRect.bottom, mPaint);
 		mPaint.setColor(Color.GRAY);
 		canvas.drawRect(cursorRect, mPaint);
-		
+
 		mPaint.setColor(Color.WHITE);
 		float drawTextPoint = 0;
 		for (String rowText : rowTexts) {
@@ -147,38 +146,36 @@ public class TextEditor extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(MotionEvent.ACTION_DOWN == event.getAction()){
-			if(! scroller.isFinished()) scroller.abortAnimation();
+		int action = event.getAction();
+		if (action == MotionEvent.ACTION_DOWN) {
+			if (! scroller.isFinished()) scroller.abortAnimation();
 			initialY = event.getY();
 			lastY = event.getY();
 			isSwiping = false;
 			return true;
 		}
-		if(MotionEvent.ACTION_MOVE == event.getAction()) {
-			if (!isSwiping && Math.abs(event.getY() - initialY) < 10) {
+		if (action == MotionEvent.ACTION_MOVE) {
+			if (!isSwiping && Math.abs(event.getY() - initialY) < 10) 
 				return true;
-			} else {
-				isSwiping = true;
-			}
-			
+				
+			isSwiping = true;
 			float maxScroll = rowHeight * rowTexts.size();
 			float distance = event.getY() - lastY;
-			
+
 			translateY -= distance;
-			if (translateY < 0) translateY = 0;
-			if (translateY > maxScroll) translateY = (int) maxScroll;
+			translateY = (int) Math.max(0, Math.min(translateY, maxScroll));
 			invalidate();
 			lastY = event.getY();
 
-			if (onTranslateY != null) onTranslateY.run();
+			if (onTranslateY != null) 
+				onTranslateY.run();
 			return true;
 		}
-		if(MotionEvent.ACTION_UP == event.getAction()){
+		if (action == MotionEvent.ACTION_UP) {
 			if (isSwiping) return true;
 			// CLICK LOGIC
 			cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
-			cursorRow = (int) ((event.getY()+translateY) / rowHeight) + 1;
-			
+			cursorRow = (int) ((event.getY() + translateY) / rowHeight) + 1;
 			invalidate();
 			return true;
 		}
@@ -187,7 +184,7 @@ public class TextEditor extends View {
 
 	@Override
 	public void computeScroll() {
-		if(scroller.computeScrollOffset()){
+		if (scroller.computeScrollOffset()) {
 			translateY = scroller.getCurrY();
 			postInvalidate();
 		}

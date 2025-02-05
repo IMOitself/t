@@ -38,12 +38,12 @@ public class LineNumbers extends View {
 		charWidth = mTextEditor.getCharWidth();
 		mTextEditor.onTranslateY = new Runnable(){
 			@Override
-			public void run(){
+			public void run() {
 				translateY = mTextEditor.translateY;
 				invalidate();
 			}
 		};
-		
+
 		int digits = String.valueOf(Math.abs(rowAmount)).length();
 		resizeWidth((int) ((digits * charWidth) + (charWidth / 2)));
 	}
@@ -60,14 +60,14 @@ public class LineNumbers extends View {
 		super.onDraw(canvas);
 		if (mTextEditor == null) return;
 		rowHeight = mPaint.getFontSpacing();
-		
+
 		canvas.translate(0, -translateY);
-		
+
 		float drawTextPoint = 0;
 		for (int i = 0; i < rowAmount; i++) {
 			drawTextPoint += rowHeight;
 			mPaint.setColor(Color.DKGRAY);
-			canvas.drawText((i+1) + "", 0, drawTextPoint, mPaint);
+			canvas.drawText((i + 1) + "", 0, drawTextPoint, mPaint);
 		}
 	}
 

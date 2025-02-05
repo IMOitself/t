@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class MainActivity extends Activity {
-	
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +18,9 @@ public class MainActivity extends Activity {
 		Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf");
 		textEditor.setTypeface(typeface);
 		textEditor.setText(getString(R.string.text));
-		
+
 		lineNumbers.linkWithTextEditor(textEditor);
-		
+
 //		seekbar.setMin(1);
 //		seekbar.setMax(10);
 //		seekbar.setProgress(1);
