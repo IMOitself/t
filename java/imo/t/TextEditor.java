@@ -177,7 +177,8 @@ public class TextEditor extends View {
 			if (isSwiping) return true;
 			// CLICK LOGIC
 			cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
-			cursorRow = (int) (event.getY() / rowHeight) + 1;
+			cursorRow = (int) ((event.getY()+translateY) / rowHeight) + 1;
+			
 			invalidate();
 			return true;
 		}
