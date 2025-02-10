@@ -36,7 +36,7 @@ public class LineNumbers extends View {
 		rowAmount = mTextEditor.getRowAmount();
 		textSize = mTextEditor.getTextSize();
 		charWidth = mTextEditor.getCharWidth();
-		mTextEditor.onTranslateY = new Runnable(){
+		mTextEditor.onTranslate = new Runnable(){
 			@Override
 			public void run() {
 				translateY = mTextEditor.translateY;

@@ -24,12 +24,17 @@ public class TextEditor extends View {
 	private int cursorCol = 0;
 	private int cursorRow = 0;
 	private int cursorWidth = 3;
+	int translateX = 0;
 	int translateY = 0;
 	private Scroller scroller;
-	private float lastY;
-	private float initialY;
+	private float lastX, lastY;
+	private float initialX, initialY;
 	private boolean isSwiping = false;
-	Runnable onTranslateY;
+	Runnable onTranslate;
+	ScrollAxis scrollAxis;
+	static enum ScrollAxis {
+		X, Y
+	}
 
 
 	public TextEditor(Context context) {
@@ -122,7 +127,7 @@ public class TextEditor extends View {
 		super.onDraw(canvas);
 		rowHeight = mPaint.getFontSpacing();
 
-		canvas.translate(0, -translateY);
+		canvas.translate(-translateX, -translateY);
 
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
@@ -149,26 +154,41 @@ public class TextEditor extends View {
 		int action = event.getAction();
 		if (action == MotionEvent.ACTION_DOWN) {
 			if (! scroller.isFinished()) scroller.abortAnimation();
+			initialX = event.getX();
 			initialY = event.getY();
-			lastY = event.getY();
+			lastX = initialX;
+			lastY = initialY;
 			isSwiping = false;
 			return true;
 		}
 		if (action == MotionEvent.ACTION_MOVE) {
-			if (!isSwiping && Math.abs(event.getY() - initialY) < 10) 
-				return true;
-				
+			float distanceToInitialX = event.getX() - initialX;
+			float distanceToInitialY = event.getY() - initialY;
+			float distanceToLastX = event.getX() - lastX;
+			float distanceToLastY = event.getY() - lastY;
+			
+			if(ScrollAxis.X == scrollAxis){
+				if (Math.abs(distanceToInitialX) < 10)
+					return true;
+				translateX -= distanceToLastX;
+				translateX = Math.max(0, translateX);
+				invalidate();
+				lastX = event.getX();
+			}
+			if(ScrollAxis.Y == scrollAxis){
+				if (Math.abs(distanceToInitialY) < 10)
+					return true;
+				float maxScrollY = rowHeight * rowTexts.size();
+				translateY -= distanceToLastY;
+				translateY = (int) Math.max(0, Math.min(translateY, maxScrollY));
+				invalidate();
+				lastY = event.getY();
+			}
+
 			isSwiping = true;
-			float maxScroll = rowHeight * rowTexts.size();
-			float distance = event.getY() - lastY;
-
-			translateY -= distance;
-			translateY = (int) Math.max(0, Math.min(translateY, maxScroll));
-			invalidate();
-			lastY = event.getY();
-
-			if (onTranslateY != null) 
-				onTranslateY.run();
+			
+			if (onTranslate != null) 
+				onTranslate.run();
 			return true;
 		}
 		if (action == MotionEvent.ACTION_UP) {
@@ -185,6 +205,7 @@ public class TextEditor extends View {
 	@Override
 	public void computeScroll() {
 		if (scroller.computeScrollOffset()) {
+			translateX = scroller.getCurrX();
 			translateY = scroller.getCurrY();
 			postInvalidate();
 		}

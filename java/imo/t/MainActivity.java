@@ -18,18 +18,21 @@ public class MainActivity extends Activity {
 		Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/jetbrainsmonoregular.ttf");
 		textEditor.setTypeface(typeface);
 		textEditor.setText(getString(R.string.text));
-
+		textEditor.scrollAxis = TextEditor.ScrollAxis.X;
+		
 		lineNumbers.linkWithTextEditor(textEditor);
 
-//		seekbar.setMin(1);
-//		seekbar.setMax(10);
-//		seekbar.setProgress(1);
-//		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-//				public void onStartTrackingTouch(SeekBar v) {}
-//				public void onStopTrackingTouch(SeekBar v) {}
-//				public void onProgressChanged(SeekBar v, int progress, boolean b) {
-//					
-//				}
-//			});
+		seekbar.setMax(1);
+		seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar v) {}
+				public void onStopTrackingTouch(SeekBar v) {}
+				public void onProgressChanged(SeekBar v, int progress, boolean b) {
+					if(0 == progress)
+						textEditor.scrollAxis = TextEditor.ScrollAxis.X;
+					if(1 == progress)
+						textEditor.scrollAxis = TextEditor.ScrollAxis.Y;
+					textEditor.invalidate();
+				}
+			});
     }
 }
