@@ -194,7 +194,7 @@ public class TextEditor extends View {
 		if (action == MotionEvent.ACTION_UP) {
 			if (isSwiping) return true;
 			// CLICK LOGIC
-			cursorCol = (int) (event.getX() / charWidth + 0.5f) + 1;
+			cursorCol = (int) ((event.getX() + translateX) / charWidth + 0.5f) + 1;
 			cursorRow = (int) ((event.getY() + translateY) / rowHeight) + 1;
 			invalidate();
 			return true;
