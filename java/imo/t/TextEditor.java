@@ -128,7 +128,11 @@ public class TextEditor extends View {
 		rowHeight = mPaint.getFontSpacing();
 
 		canvas.translate(-translateX, -translateY);
-
+		
+		int cursorRowMaxColumns = 0;
+		if(cursorRow > 0) cursorRowMaxColumns = rowTexts.get(cursorRow - 1).length();
+		if(cursorCol >= cursorRowMaxColumns) cursorCol = cursorRowMaxColumns + 1;
+		
 		cursorRect.left = (cursorCol * charWidth) - charWidth;
 		cursorRect.top = (cursorRow * rowHeight) - rowHeight;
 		if (cursorRect.left < 0) cursorRect.left = 0;
