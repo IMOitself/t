@@ -137,7 +137,7 @@ public class TextEditor extends View {
 		cursorRect.bottom = cursorRect.top + rowHeight;
 
 		mPaint.setColor(Color.DKGRAY);
-		canvas.drawRect(0, cursorRect.top, getWidth(), cursorRect.bottom, mPaint);
+		canvas.drawRect(0, cursorRect.top, getWidth() + translateX, cursorRect.bottom, mPaint);
 		mPaint.setColor(Color.GRAY);
 		canvas.drawRect(cursorRect, mPaint);
 
